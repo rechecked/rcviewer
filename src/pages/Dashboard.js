@@ -50,7 +50,7 @@ function Dashboard() {
     async function checkVersion() {
       const resp = await fetch("https://api.rechecked.io/versions?product=rcagent");
       const data = await resp.json();
-      if (compareVersions(systemInfo.version, data.latest) === -1) {
+      if (systemInfo?.version && compareVersions(systemInfo.version, data.latest) === -1) {
         setUpgrade(true);
       }
     }
@@ -61,7 +61,7 @@ function Dashboard() {
 
   // Update agent information about version, os, etc in stored agents if it exists
   useEffect(() => {
-    if (systemInfo) {
+    if (systemInfo?.version) {
       let newAgent = dashboardAgent;
       newAgent.os = ucFirst(systemInfo.os);
       newAgent.platform = platformName(systemInfo.platform);
