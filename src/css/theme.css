@@ -1,0 +1,9 @@
+
+.Mui-focusVisible {
+  border: 1px solid #000;
+}
+
+/* No border on last row for outlined table */
+.MuiPaper-outlined > table .MuiTableBody-root tr:last-child td, .MuiPaper-outlined > table .MuiTableBody-root tr:last-child th {
+  border: 0;
+}

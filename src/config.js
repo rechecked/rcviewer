@@ -1,0 +1,9 @@
+export const refreshRates = {
+  OVERVIEW: 5000,
+  DISK: 15000,
+  NETWORK: 3000,
+  PROCESSES: 3000,
+  SERVICES: 15000,
+  USERS: 30000,
+  PLUGINS: 30000
+};

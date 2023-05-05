@@ -1,0 +1,10 @@
+name: rcviewer
+static_sites:
+  - build_command: npm build
+    environment_slug: node-js
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: rechecked/rcviewer
+    name: rcviewer
+    catchall_document: index.html

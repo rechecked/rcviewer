@@ -1,0 +1,9 @@
+spec:
+  name: rcviewer
+  services:
+  - build_command: npm build
+    environment_slug: node-js
+    git:
+      branch: main
+      repo_clone_url: https://github.com/rechecked/rcviewer.git
+    name: rcviewer
