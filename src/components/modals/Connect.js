@@ -15,6 +15,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 
 import { useDashboard } from '../../context/dashboard';
+import { buildApiURL} from '../../utils/network';
 
 function VerifySSLDialog({ url, open, onClose }) {
   return (
@@ -43,6 +44,7 @@ function Connect() {
   const [tokenHelperText, setTokenHelperText] = useState('');
   const [url, setUrl] = useState('');
   const [info, setInfo] = useState('');
+  const [error, setError] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,6 +55,8 @@ function Connect() {
   };
 
   const handleSubmit = () => {
+
+    setError('');
 
     // Validate the form fields
     if (hostname === "") {
@@ -69,10 +73,8 @@ function Connect() {
       token: token
     };
 
-    //console.log(agent);
-
     // Test connection and see if we are good to go
-    const url = `${agent.protocol}//${agent.hostname}:${agent.port}/status/system?token=${agent.token}`
+    const url = buildApiURL(agent, 'system');
     setUrl(url); // set url but maybe not needed to do this like this
     var start = window.performance.now();
     fetch(url)
@@ -102,7 +104,7 @@ function Connect() {
           var left = (window.innerWidth - 400) / 2;
           window.open(url,'_blank',`height=600,width=400,top=${top},left=${left},titlebar=Security Confirmation`);
         }
-        console.log(error.message);
+        setError("Could not connect to agent. Verify it is running and credentials are correct.");
       })
       .finally(() => {
         setLoading(false);
@@ -154,7 +156,8 @@ function Connect() {
             Enter agent information to conncet and view dashboard. Copy/paste the whole URL
             including token into the hostname to auto-complete the form.
           </DialogContentText>
-          {info && <Alert sx={{ marginBottom: 4 }} severity="info">{info}</Alert>}
+          {error && <Alert sx={{ mb: 4 }} severity="error">{error}</Alert>}
+          {info && <Alert sx={{ mb: 4 }} severity="info">{info}</Alert>}
           <Grid container spacing={2}>
             <Grid item xs="auto">
               <Box width={100}>

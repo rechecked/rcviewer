@@ -1,19 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { isEmpty } from '../utils/common';
+import { buildApiURL} from '../utils/network';
 import { refreshRates } from '../config';
-
-const buildApiURL = (agent, path, args = {}) => {
-  const apiUrl = `${agent.protocol}//${agent.hostname}:${agent.port}/status/`;
-  const params = { token: agent.token, ...args };
-  const strParams = `?${Object.keys(params).map(i => {
-    if (Array.isArray(params[i])) {
-      return "arg="+params[i].join('&arg=');
-    }
-    return `${i}=${params[i]}`;
-  }).join('&')}`;
-  return apiUrl+path+strParams;
-};
 
 const fetchSystem = async (agent, signal) => {
   if (isEmpty(agent)) {

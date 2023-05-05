@@ -16,6 +16,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 
 import Page from '../components/layout/Page';
 import Gauge from '../components/charts/Gauge';
@@ -25,10 +26,11 @@ import { useAgent, useAgentOverview } from '../hooks/useAgent';
 import { useDashboard } from '../context/dashboard';
 import { useAgents } from '../context/agents';
 import { isEmpty, ucFirst, platformName } from '../utils/common';
+import { buildApiURL} from '../utils/network';
 import { DashboardSettingsButton, ExampleCheckButton } from '../components/buttons';
 
 function Dashboard() {
-  const { dashboardAgent } = useDashboard();
+  const { dashboardAgent, setDashboardAgent } = useDashboard();
   const { editAgent } = useAgents();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -74,6 +76,16 @@ function Dashboard() {
     setSearchParams({ tab: tabVal });
   }
 
+  const handleCancel = () => {
+    setDashboardAgent({});
+  };
+
+  const handleReApprove = () => {
+    var top = (window.innerHeight - 600) / 2;
+    var left = (window.innerWidth - 400) / 2;
+    window.open(buildApiURL(dashboardAgent, 'system'),'_blank',`height=600,width=400,top=${top},left=${left},titlebar=Re-Approve Security Exception`);
+  };
+
   const agentUrl = `${dashboardAgent.protocol}//${dashboardAgent.hostname}:${dashboardAgent.port}`;
 
   return (
@@ -82,15 +94,21 @@ function Dashboard() {
         <Grid container alignItems="center" justifyContent="center" spacing={4}>
           <Grid item>
             {failureCount > 0 ? (
-              <Alert severity="error">
-                <AlertTitle>Could not connect to <Link color="inherit" href={agentUrl} target="_blank" rel="noopener noreferrer">{dashboardAgent.hostname}</Link></AlertTitle>
-                There are a few reasons that this could happen:
-                <ul style={{ margin: 0, padding: '5px 25px' }}>
-                  <li>No rcagent running on the host</li>
-                  <li>You are using a self-signed SSL certificate and need to re-approve the exception</li>
-                  <li>If you are using an IP address the host IP may have changed</li>
-                </ul>
-              </Alert>
+              <Stack spacing={4} alignItems="center">
+                <Alert severity="error">
+                  <AlertTitle>Could not connect to <Link color="inherit" href={agentUrl} target="_blank" rel="noopener noreferrer">{dashboardAgent.hostname}</Link></AlertTitle>
+                  There are a few reasons that this could happen:
+                  <ul style={{ margin: 0, padding: '5px 25px' }}>
+                    <li>No rcagent running on the host</li>
+                    <li>You are using a self-signed SSL certificate and need to re-approve the exception</li>
+                    <li>If you are using an IP address the host IP may have changed</li>
+                  </ul>
+                </Alert>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="outlined" color="secondary" onClick={handleReApprove}>Re-Approve Exception</Button>
+                  <Button onClick={handleCancel}>Cancel</Button>
+                </Stack>
+              </Stack>
             ) : <CircularProgress color="secondary" />}
           </Grid>
         </Grid>
