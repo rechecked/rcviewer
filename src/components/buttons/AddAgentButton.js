@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -10,17 +10,28 @@ import { useAgents } from '../../context/agents';
 function AddAgentButton({ agent }) {
 
   const [added, setAdded] = useState(false);
+  const [isAlreadyAdded, setIsAlreadyAdded] = useState(true);
 
-  const { addAgent } = useAgents();
+  const { agents, addAgent } = useAgents();
+
+  useEffect(() => {
+    if (agents.stored?.filter(a => a.name === agent.name).length === 0) {
+      setIsAlreadyAdded(false);
+    }
+  }, []);
 
   const handleAddAgent = () => {
     addAgent(agent);
     setAdded(true);
   };
 
+  if (isAlreadyAdded) {
+    return;
+  }
+
   return (
     <Tooltip title="Add agent">
-      <IconButton onClick={handleAddAgent} aria-label="add agent">
+      <IconButton disabled={added ? true : false} onClick={handleAddAgent} aria-label="add agent">
         {added ? <CheckIcon /> : <AddOutlinedIcon />}
       </IconButton>
     </Tooltip>

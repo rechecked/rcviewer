@@ -27,7 +27,7 @@ import { useDashboard } from '../context/dashboard';
 import { useAgents } from '../context/agents';
 import { isEmpty, ucFirst, platformName } from '../utils/common';
 import { buildApiURL} from '../utils/network';
-import { DashboardSettingsButton, ExampleCheckButton } from '../components/buttons';
+import { DashboardSettingsButton, ExampleCheckButton, AddAgentButton } from '../components/buttons';
 
 function Dashboard() {
   const { dashboardAgent, setDashboardAgent } = useDashboard();
@@ -142,6 +142,7 @@ function Dashboard() {
                 {upgrade && <Typography variant="body1" sx={{ fontSize: 12, color: 'red' }}>Update available</Typography>}
               </Box>
               <Box>
+                <AddAgentButton agent={dashboardAgent} />
                 <DashboardSettingsButton />
               </Box>
             </Stack>

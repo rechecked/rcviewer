@@ -9,7 +9,7 @@ export function useAgents() {
 
 export function AgentsProvider(props) {
   const a = getLocalStorage("agents", "JSON");
-  const [agents, setAgents] = useState(a === null ? { recent: [], stored: [] } : a);
+  const [agents, setAgents] = useState(a === null ? { recent: [], stored: [], recentDisabled: false } : a);
 
   const updateAgents = (key, update) => {
     setAgents((prevState, currProps) => {
@@ -24,7 +24,7 @@ export function AgentsProvider(props) {
 
   // Add a recently connected agent to the list
   const addRecentAgent = (agent) => {
-    if (isEmpty(agent)) {
+    if (isEmpty(agent) || agents.recentDisabled) {
       return;
     }
 
@@ -126,6 +126,10 @@ export function AgentsProvider(props) {
     updateAgents("stored", []);
   };
 
+  const setRecentDisabled = (value) => {
+    updateAgents("recentDisabled", value ? true : false);
+  };
+
   return (
     <AgentsContext.Provider value={{
       agents,
@@ -137,7 +141,8 @@ export function AgentsProvider(props) {
       removeRecentAgent,
       addAgent,
       editAgent,
-      removeAgent
+      removeAgent,
+      setRecentDisabled
     }}>
       {props.children}
     </AgentsContext.Provider>

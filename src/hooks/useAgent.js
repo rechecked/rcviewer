@@ -167,7 +167,6 @@ export function useAgent(agent) {
   return useQuery({
     queryKey: ['agent'],
     queryFn: ({ signal }) => fetchSystem(agent, signal),
-    refetchOnWindowFocus: false
   });
 }
 

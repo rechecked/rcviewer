@@ -3,6 +3,8 @@ import TimeAgo from 'react-timeago';
 
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
@@ -11,17 +13,32 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 import { ConnectButton, CustomIconButton, AddAgentButton } from './buttons';
 import { useAgents } from '../context/agents';
 
 function RecentAgents() {
 
-  const { agents, clearRecentAgents, removeRecentAgent } = useAgents();
+  const { agents, clearRecentAgents, removeRecentAgent, setRecentDisabled } = useAgents();
+
+  const toggleDisableRecent = () => {
+    setRecentDisabled(!agents.recentDisabled);
+    clearRecentAgents();
+  };
 
   return (
     <Fragment>
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ marginBottom: 1 }}>
-        <Typography variant="h6">Recently Connected Agents</Typography>
+        <Stack direction="row" spacing={2}>
+          <Typography variant="h6">Recently Connected Agents</Typography>
+          <Tooltip placement="top" title={agents.recentDisabled ? "Enable recent agents functionality" : "Disable recent agents functionality"}>
+            <IconButton size="small" onClick={toggleDisableRecent}>
+              {agents.recentDisabled ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
+            </IconButton>
+          </Tooltip>
+        </Stack>
         <Button size="small" color="secondary"
           onClick={() => clearRecentAgents()}
           disabled={agents.recent?.length === 0}>
@@ -54,7 +71,7 @@ function RecentAgents() {
             )) : (
               <TableRow>
                 <TableCell>
-                  No recently connected agents.
+                  {agents.recentDisabled ? "Recent agents functionality is currently disabled." : "No recently connected agents."}
                 </TableCell>
               </TableRow>
             )}
