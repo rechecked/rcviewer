@@ -18,6 +18,7 @@ function AddAgentButton({ agent }) {
     if (agents.stored?.filter(a => a.name === agent.name).length === 0) {
       setIsAlreadyAdded(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddAgent = () => {

@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -24,7 +24,7 @@ function Content(props) {
               <Stack direction="row" alignItems="center" spacing={6} sx={{ flexGrow: 1 }}>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <img src="/logo192.png" style={{ width: 30, height: '100%' }} alt="rechecked logo" />
-                  <Typography component={Link} to="/" variant="h6" sx={{
+                  <Typography component={RouterLink} to="/" variant="h6" sx={{
                     color: 'inherit',
                     textDecoration: 'none',
                   }}>
