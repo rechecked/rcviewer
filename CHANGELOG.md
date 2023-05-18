@@ -1,3 +1,8 @@
+1.0.2 - ??/??/2023
+==================
+- Added description text to public html
+- Fixed nav bar main logo/header link to not reload entire page
+
 1.0.1 - 05/05/2023
 ==================
 - Added a footer with info
